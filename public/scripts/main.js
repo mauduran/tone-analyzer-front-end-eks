@@ -26,12 +26,17 @@ function getToneOfText() {
         body: JSON.stringify({ content })
     }).then((res) => res.json()
     ).then((result) => {
-        console.log(result);
-        resultDiv.innerHTML = '<p class="h1" style="text-align:center">-Results- Your text\'s tone is:</p>';
 
-        result.tones.forEach((tone)=>{
-            resultDiv.innerHTML += `<p style="text-align:center" class="display-6">${tone.tone_name} - ${(tone.score*100).toFixed(2)}%<p>`
-        })
+
+        if(result.tones.length){
+            resultDiv.innerHTML = '<p class="h1" style="text-align:center">-Results- Your text\'s tone is:</p>';
+    
+            result.tones.forEach((tone)=>{
+                resultDiv.innerHTML += `<p style="text-align:center" class="display-6">${tone.tone_name} - ${(tone.score*100).toFixed(2)}%<p>`
+            })
+        } else {
+            resultDiv.innerHTML = 'Could not get tone of text. Did you write it in English?';
+        }
     }).catch((err) => {
         resultDiv.innerHTML = 'Could not get tone analysis.'
         resultDiv.style = "color:red;"
