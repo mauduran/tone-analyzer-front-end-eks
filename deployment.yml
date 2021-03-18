@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-tone-analysis-mdp-app
+  labels:
+    name: eks-tone-analysis-mdp-app
+    app: eks-tone-analysis-mdp-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: eks-tone-analysis-mdp-pod
+      app: eks-tone-analysis-mdp-app
+  template:
+    metadata:
+      name: eks-tone-analysis-mdp-pod
+      labels:
+        name: eks-tone-analysis-mdp-pod
+        app: eks-tone-analysis-mdp-app
+    spec:
+      containers:
+        - name: eks-tone-analysis-mdp-app
+          image: "812568621328.dkr.ecr.us-east-1.amazonaws.com/text-analyzer-front:latest"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 128Mi
+              cpu: "0.2"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
